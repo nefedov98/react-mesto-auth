@@ -178,7 +178,10 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header 
+          email={email} 
+          loggedIn={loggedIn}
+        />
         <Switch>
           <ProtectedRoute
             exact path='/'
