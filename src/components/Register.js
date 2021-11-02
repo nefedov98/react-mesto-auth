@@ -35,7 +35,6 @@ export default function Register({ onRegister }) {
                     className='register__input' 
                     name="Password"
                     type="password"
-                    placeholder="Пароль" 
                     id="password"
                     placeholder="Пароль"
                     minLength="6"

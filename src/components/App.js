@@ -97,7 +97,7 @@ function App() {
   function handleCardDelete(card) {
     api.deleteCard(card._id)
       .then(() => {
-        setCards(cards.filter((item) => item !== card))
+        setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch((err) => console.log(err))
   }
@@ -123,13 +123,10 @@ function App() {
 
   function handleLogin(password, email) {
     auth.authorize(password, email)
-      .then((token) => {
-        auth.getContent(token)
-          .then((res) => {
-            setEmail(res.data.email)
-            setLoggedIn(true)
-            history.push('/')
-          })
+      .then((res) => {
+        setEmail(res.data.email)
+        setLoggedIn(true)
+        history.push('/')
       })
       .catch((err) => console.log(err))
   }
@@ -164,6 +161,18 @@ function App() {
 
       })
       .catch((err) => console.log(err));
+  }, [])
+
+  useEffect(() => {
+    const closeByEscape = (e) => {
+      if (e.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+
+    document.addEventListener('keydown', closeByEscape)
+
+    return () => document.removeEventListener('keydown', closeByEscape)
   }, [])
 
   return (
