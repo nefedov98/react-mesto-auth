@@ -123,10 +123,13 @@ function App() {
 
   function handleLogin(password, email) {
     auth.authorize(password, email)
-      .then((res) => {
-        setEmail(res.data.email)
-        setLoggedIn(true)
-        history.push('/')
+      .then((token) => {
+        tokenCheck(token)
+          .then((res) => {
+            setEmail(res.data.email)
+            setLoggedIn(true)
+            history.push('/')
+          })
       })
       .catch((err) => console.log(err))
   }
@@ -145,6 +148,11 @@ function App() {
         })
         .catch((err) => console.log(err))
     }
+  }
+
+  function onSignOut() {
+    localStorage.removeItem('jwt')
+    setLoggedIn(false)
   }
 
 
@@ -178,9 +186,10 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header 
-          email={email} 
+        <Header
+          email={email}
           loggedIn={loggedIn}
+          onSignOut={onSignOut}
         />
         <Switch>
           <ProtectedRoute
